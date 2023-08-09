@@ -21,10 +21,10 @@ class MailService {
         await this.transporter.sendMail({
             from: process.env.SMTP_HOST,
             to,
-            subject: 'Активация аккаунта на' + process.env.API_URL,
+            subject: 'Активация аккаунта на ' + process.env.API_URL,
             text: '',
-            html: 
-            `
+            html:
+                `
                 <div>
                     <h1>Для активации аккаунта перейдите по ссылке</h1>
                     <a href="${link}">${link}</a>
@@ -33,15 +33,45 @@ class MailService {
         })
     }
 
-    async send(data) {
+    async sendOrder(data) {
         await this.transporter.sendMail({
             from: process.env.SMTP_HOST,
-            to: data.to,
-            subject: `Вам пишет ${data.name}. Почта: ${data.email}`,
+            to: process.env.SMTP_USER,
+            subject: `Имя заказчика: ${!data.username ? '<отсутствует>': data.username}. Почта: ${!data.email ? '<отсутствует>': data.username}. Номер: ${data.phone}.`,
             from: data.email,
-            text: data.text,
+            html: `
+            <div>
+                <p>Общее количество позиций: ${data.amount}</p>
+                <p>Общая стоимость: $${data.totalsum}</p>
+            </div>
+            <br/>
+            ${data.userCart}
+            ` 
         })
     }
+
 }
 
 module.exports = new MailService();
+
+
+
+// `
+// <div>
+//     <h1>Поступил заказ</h1>
+//         ${data.userCart.map((item) => {
+//             return (
+//                 `
+//                 <div>
+//                     <p>ID товара: ${item.productId}</p>
+//                     <p>Цена за единицу: ${item.newprice}</p>
+//                     <p>Количество: ${item.count}</p>
+//                 </div>
+//                 `
+//             )
+//         })}
+//     </p>
+//     <p>Количество позиций ${data.amount}</p>
+//     <p>Общая соимоть <span>$</span>${data.totalsum}</p>
+// </div>
+// `

@@ -23,4 +23,4 @@ db.sequelize.sync().then(() => {
     })
 })
  
- 
+  

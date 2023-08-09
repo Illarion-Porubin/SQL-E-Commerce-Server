@@ -14,14 +14,16 @@ router.get('/me', checkAuth.check, userController.getMe);
 router.get('/refresh', userController.refresh);
 router.get('/activate/:link', userController.activate);
 ///cart///
-router.get('./cart', cartController.addProductCart);
+router.post('/cart', cartController.addOrder);
 ///product///
 router.post('/product', productController.createProduct);
-router.get('/product', productController.getProducts);
+// router.get('/product', productController.getProducts);
+// router.get('/products/page/:value', productController.getPages);
 router.get('/product/:id', productController.getProductById);
-router.get('/products/:id', productController.getAllProductsById);
- 
- 
+router.get('/product/search/:search', productController.searchProductByValue);
+router.get('/products/label/:paramsProducts', productController.getAllProductsByLabel);
+
+
 
 
 module.exports = router;

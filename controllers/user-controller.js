@@ -4,6 +4,7 @@ const ApiError = require('../exceptions/api-error');
 
 class UserController {
     async registration(req, res, next) {
+
         try {
             // const errors = validationResult(req);
             // if (!errors.isEmpty()) {
@@ -17,7 +18,7 @@ class UserController {
             return res.json(userData);
         } catch (e) {
             res.json(e)
-        }
+        } 
     }
 
     async login(req, res, next) {

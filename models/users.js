@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             require: true,
         },
     },
+
         {
             indexes: [
                 {
@@ -41,8 +42,6 @@ module.exports = (sequelize, DataTypes) => {
     )
 
     Users.associate = (models) => {
-        Users.belongsToMany(models.Roles, { through: 'UserRoles' });
-        Users.belongsToMany(models.Products, { through: 'CartList' });
         Users.hasOne(models.Tokens, {
             foreignKey: {
                 name: DataTypes.UUID,
@@ -52,6 +51,6 @@ module.exports = (sequelize, DataTypes) => {
         });
     }
 
-
+ 
     return Users
 }  
