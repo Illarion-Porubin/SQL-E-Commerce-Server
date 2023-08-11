@@ -17,6 +17,8 @@ router.get('/activate/:link', userController.activate);
 router.post('/cart', cartController.addOrder);
 ///product///
 router.post('/product', productController.createProduct);
+router.post('/product/rating', productController.addRating);
+
 // router.get('/product', productController.getProducts);
 // router.get('/products/page/:value', productController.getPages);
 router.get('/product/:id', productController.getProductById);

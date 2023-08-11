@@ -1,4 +1,4 @@
-const { Products } = require("../models");
+const { Products, Ratings } = require("../models");
 const Sequelize = require('sequelize');
 
 class ProductService {
@@ -13,7 +13,13 @@ class ProductService {
 
     // async getProducts() {
     //     try {
-    //         return await Products.findAll()
+    //         const products =  await Products.findAll({
+    //             include: [{
+    //                 model: Ratings,
+    //                 attributes: ['rating']
+    //             }]
+    //         })
+    //         return products
     //     } catch (error) {
     //         return error
     //     }
@@ -28,9 +34,21 @@ class ProductService {
         }
     }
 
+    async addRating(data) {
+        const { UserId, ProductId, rating } = data;
+        try {
+            const findRatingCard = await Ratings.findOne({ where: { ProductId: ProductId, UserId: UserId } });
+            if (!findRatingCard) {
+                return await Ratings.create({ UserId: UserId, ProductId: ProductId, rating: rating })
+            }
+            return await findRatingCard.update({ rating: rating })
+        } catch (error) {
+            return error
+        }
+    }
+
     async searchProductByValue(value) {
         try {
-            console.log(true)
             const product = await Products.findAll({
                 limit: 10,
                 where: {
@@ -39,7 +57,6 @@ class ProductService {
                     ]
                 }
             })
-            console.log(product)
             return product
         } catch (error) {
             return error
@@ -78,28 +95,32 @@ class ProductService {
     // }
 
     async getAllProductsByLabel(label, page) {
-        try {      
+        try {
             const limitProducts = 8;
             const currentPage = Number(page);
-            const totalProducts = await Products.findAll(); 
+            const totalProducts = await Products.findAll();
             const lastPage = Math.ceil(totalProducts.length / limitProducts) - 1;
             const checkPage = (currentPage * limitProducts) > totalProducts.length ? lastPage * limitProducts : currentPage * limitProducts;
+            const allPages = await Products.findAndCountAll({
+                include: [{
+                    model: Ratings,
+                    attributes: ['rating']
+                }]
+            },
 
-            
-            const allPages = await Products.findAndCountAll(
                 label === "all" ?
-                {
-                    limit: limitProducts, //number of products per page
-                    offset: checkPage, //page
-                }
-                :
-                {
-                    where: { label: label },
-                    limit: limitProducts, //number of products per page
-                    offset: checkPage, //page
-                },
+                    {
+                        limit: limitProducts, //number of products per page
+                        offset: checkPage, //page
+                    }
+                    :
+                    {
+                        where: { label: label },
+                        limit: limitProducts, //number of products per page
+                        offset: checkPage, //page
+                    },
             )
-            return allPages
+            return {...allPages, }
         } catch (error) {
             return error
         }

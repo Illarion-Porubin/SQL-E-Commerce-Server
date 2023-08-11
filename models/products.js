@@ -24,13 +24,13 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
 
-        oldprice: {
+        oldprice: { 
             type: DataTypes.INTEGER,
             require: true,
             allowNull: false,
         },
 
-///////defaultValue
+        ///////defaultValue
 
         rating: {
             type: DataTypes.INTEGER,
@@ -45,27 +45,14 @@ module.exports = (sequelize, DataTypes) => {
 
         label: {
             type: DataTypes.STRING,
-            defaultValue: 'new', 
+            defaultValue: 'new',
             allowNull: false,
         },
-
-        // quantity: {
-        //     type: DataTypes.STRING,
-        //     require: true,
-        //     allowNull: false,
-        // },
-
-        // order: {
-        //     type: DataTypes.STRING,
-        //     defaultValue: '0',
-        //     allowNull: false,
-        // },
-
     })
 
     Products.associate = (models) => {
+        Products.hasMany(models.Ratings, { onDelete: "cascade", });
         // Products.belongsToMany(models.Categorys, { through: 'ProductList' });
-        // Products.belongsToMany(models.Users, { through: 'CartList' });
         // Products.hasOne(models.CartList);
         // Users.belongsToMany(models.Roles, { through: 'UserRoles' });
         // Users.hasMany(models.UserRoles, {

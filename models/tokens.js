@@ -1,10 +1,5 @@
 module.exports = (sequlize, DataTypes) => {
     const Tokens = sequlize.define("Tokens", {
-        // UserId: {
-        //     type: DataTypes.INTEGER,
-        //     allowNull: false,
-        // },
-
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,

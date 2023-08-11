@@ -55,8 +55,16 @@ class ProductController {
             return res.status(200).json(allProducts)
         }
         return res.status(401).json({ error: "Label is empty" })
-    }
+    }   
 
+    async addRating(req, res) {
+        const data = req.body
+        if(data){
+            const allProducts = await productService.addRating(data)
+            return res.status(200).json(allProducts)
+        }
+        return res.status(401).json({ error: "Data is empty" })
+    }
    
 }
 
