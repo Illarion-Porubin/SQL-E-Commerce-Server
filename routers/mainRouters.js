@@ -22,7 +22,7 @@ router.post('/product/rating', productController.addRating);
 // router.get('/product', productController.getProducts);
 // router.get('/products/page/:value', productController.getPages);
 router.get('/product/:id', productController.getProductById);
-router.get('/product/search/:search', productController.searchProductByValue);
+router.get('/product/search/:paramsProduct', productController.searchProductByValue);
 router.get('/products/label/:paramsProducts', productController.getAllProductsByLabel);
 
 

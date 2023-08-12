@@ -37,12 +37,12 @@ class ProductController {
     }
 
     async searchProductByValue(req, res) {
-        const value = req.params.search;
-        if(value){
-            const product = await productService.searchProductByValue(value)
+        const data = JSON.parse(req.params.paramsProduct)
+        if(data){
+            const product = await productService.searchProductByValue(data)
             return res.status(200).json(product)
         }
-        return res.status(401).json({ error: "Value is empty" })
+        return res.status(401).json({ error: "paramsProduct is empty" })
     }
 
     async getAllProductsByLabel(req, res) {
