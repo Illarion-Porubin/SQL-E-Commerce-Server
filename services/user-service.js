@@ -7,7 +7,8 @@ const ApiError = require('../exceptions/api-error');
 const { Users, Tokens } = require("../models");
 
 class UserService {
-    async registration(username, email, password) {
+    async registration(data) {
+        const { username, email, password, phone } = data;
         const candidate = await Users.findOne({ where: { email: email } })
         if (candidate) {
             throw ApiError.BadRequest('Пользователь уже существует')
@@ -16,13 +17,13 @@ class UserService {
         const hashPassword = await bcrypt.hash(password, 3);
         const activationLink = uuid.v4();
 
-        const user = await Users.create({ username, email, password: hashPassword, activationLink });
+        const user = await Users.create({ username, email, phone, password: hashPassword, activationLink });
 
         await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
         const userDto = new UserDto(user)
         const tokens = tokenService.generateTokens({ ...userDto });
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
- 
+
         return {
             ...tokens,
             user: userDto
@@ -59,13 +60,13 @@ class UserService {
     }
 
     async update(data) {
-        const { email, username } = data; //password
+        const { email, username, phone } = data; 
         const user = await Users.findOne({ where: { email: email } });
         if (!user) {
             throw ApiError.BadRequest("Пользователь не найден");
         }
         return await user.update(
-            { username: username })
+            { username: username, phone: phone })
     }
 
     async me(req, res) {

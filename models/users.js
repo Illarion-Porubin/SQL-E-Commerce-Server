@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
             require: true,
             allowNull: false,
         },
+        phone: {
+            type: DataTypes.STRING,
+            require: false,
+            defaultValue: '',
+        },
         password: {
             type: DataTypes.STRING,
             require: true,
@@ -42,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     )
 
     Users.associate = (models) => {
-        Users.hasMany(models.Ratings, {  onDelete: "cascade", });
+        Users.hasMany(models.Ratings, { onDelete: "cascade", });
         Users.hasOne(models.Tokens, {
             foreignKey: {
                 name: DataTypes.UUID,
@@ -52,6 +57,6 @@ module.exports = (sequelize, DataTypes) => {
         });
     }
 
- 
+
     return Users
 }  

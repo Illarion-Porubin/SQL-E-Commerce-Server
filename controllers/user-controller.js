@@ -4,24 +4,23 @@ const ApiError = require('../exceptions/api-error');
 
 class UserController {
     async registration(req, res, next) {
-
         try {
             // const errors = validationResult(req);
             // if (!errors.isEmpty()) {
             //     return next(ApiError.BadRequest('Ошибка при валидаци', errors.array()))
             // }
-            const { username, email, password } = req.body;
-            const userData = await userService.registration(username, email, password);
+            const data = req.body;
+            const userData = await userService.registration(data);
             res.cookie("refreshToken", userData.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true
             })
             return res.json(userData);
         } catch (e) {
             res.json(e)
-        } 
+        }
     }
 
-    async login(req, res, next) {
+    async login(req, res) {
         const { email, password } = req.body;
         const userData = await userService.login(email, password);
         try {
@@ -34,7 +33,7 @@ class UserController {
         }
     }
 
-    async logout(req, res, next) {
+    async logout(req, res) {
         try {
             const { refreshToken } = req.cookies;
             await userService.logout(refreshToken);
@@ -46,7 +45,7 @@ class UserController {
         }
     }
 
-    async update(req, res, next) {
+    async update(req, res) {
         try {
             const userData = await userService.update(req.body);
             return res.json(userData);
@@ -58,7 +57,6 @@ class UserController {
     async getMe(req, res, next) {
         try {
             const me = await userService.me(req, res);
-            console.log(me)
             return res.json(me);
         } catch (e) {
             res.json(e);
