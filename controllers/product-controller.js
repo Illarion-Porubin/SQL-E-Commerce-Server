@@ -10,23 +10,6 @@ class ProductController {
         return res.status(401).json({ error: "Bad request" })
     }
 
-    // async getProducts(req, res) {
-    //     const allProducts = await productService.getProducts()
-    //     if (allProducts) {
-    //         return res.status(200).json(allProducts)
-    //     }
-    //     return res.status(401).json({ error: "Bad request" })
-    // }
-
-    // async getPages(req, res)  {
-    //     const page = req.params.value;
-    //     if(page){
-    //         const pages = await productService.getPages(page)
-    //         return res.status(200).json(pages)
-    //     }
-    //     return res.status(401).json({ error: "Page not found" })
-    // }
-
     async getProductById(req, res) {
         const prodId = req.params.id;
         if(prodId){

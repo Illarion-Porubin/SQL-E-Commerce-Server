@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const Users = sequelize.define("Users", {
+        avatar: {
+            type: DataTypes.STRING,
+            require: false,
+            allowNull: true,
+        },
         username: {
             type: DataTypes.STRING,
             require: true,

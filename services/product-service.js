@@ -11,20 +11,6 @@ class ProductService {
         }
     }
 
-    // async getProducts() {
-    //     try {
-    //         const products =  await Products.findAll({
-    //             include: [{
-    //                 model: Ratings,
-    //                 attributes: ['rating']
-    //             }]
-    //         })
-    //         return products
-    //     } catch (error) {
-    //         return error
-    //     }
-    // }
-
     async getProductById(prodId) {
         try {
             const product = await Products.findByPk(prodId)
@@ -46,58 +32,6 @@ class ProductService {
             return error
         }
     }
-
-
-    // async getAllProductsById(prodId) {
-    //     try {
-    //         const allProducts = await Products.findAll(
-    //             {
-    //                 where: { id: prodId },
-    //                 include: {
-    //                     model: Categorys,
-    //                     attributes: ["сategory"],
-    //                     through: {
-    //                         attributes: []
-    //                     },
-    //                     raw: true
-    //                 }
-    //             }
-    //         )
-
-    //         const dataListProducts = allProducts.map((element) => {
-    //             const categoryList = element.dataValues.Categorys.map((el) => {
-    //                 return el.dataValues.сategory
-    //             });
-    //             return element = { ...element.dataValues, Categorys: categoryList }
-    //         })
-    //         return dataListProducts
-
-    //         return allProducts
-
-    //     } catch (error) {
-    //         return error
-    //     }
-    // }
-
-    // async searchProductByValue(value) {
-    //     try {
-    //         const product = await Products.findAll({
-    //             limit: 8,
-    //             include: [{
-    //                 model: Ratings,
-    //                 attributes: ['rating']
-    //             }],
-    //             where: {
-    //                 [Sequelize.Op.or]: [
-    //                     { desc: { [Sequelize.Op.like]: '%' + value + '%' } },
-    //                 ]
-    //             }
-    //         })
-    //         return product
-    //     } catch (error) {
-    //         return error
-    //     }
-    // }
 
     async searchProductByValue(data) {
         const {word, page} = data;
@@ -154,30 +88,11 @@ class ProductService {
                         }]
                     },
             )
-            return allPages
+            return allPages.rows
         } catch (error) {
             return error
         }
     }
-
-    // async getPages(value) {
-    //     try {
-    //         const page = Number(value);
-    //         const limitProducts = 8;
-    //         const totalProducts = await Products.findAll(); 
-    //         const lastPage = Math.ceil(totalProducts.length / limitProducts) - 1;
-    //         const checkPage = (page * limitProducts) > totalProducts.length ? lastPage * limitProducts : page * limitProducts;
-    //         const allPages = await Products.findAndCountAll(
-    //             {
-    //                 limit: limitProducts, //number of products per page
-    //                 offset: checkPage, //page
-    //             }
-    //         )
-    //         return allPages
-    //     } catch (error) {
-    //         return error
-    //     }
-    // }
 }
 
 module.exports = new ProductService()

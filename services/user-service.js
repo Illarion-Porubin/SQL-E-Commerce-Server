@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
+const fs = require('fs');
 const mailService = require('./mail-service');
 const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
@@ -33,17 +34,16 @@ class UserService {
     async login(email, password) {
         const user = await Users.findOne({ where: { email: email } });
         if (!user) {
-            throw ApiError.BadRequest('Пользователь не найден')
+            return ApiError.BadRequest('Пользователь не найден')
         }
         const isPassEquals = await bcrypt.compare(password, user.password);
         if (!isPassEquals) {
-            throw ApiError.BadRequest('Неверный логин или пароль')
+            return ApiError.BadRequest('Неверный логин или пароль')
         }
 
         const userDto = new UserDto(user); // constructor(model) 
         const tokens = tokenService.generateTokens({ ...userDto });
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
         return {
             ...tokens,
             user: userDto
@@ -60,13 +60,18 @@ class UserService {
     }
 
     async update(data) {
-        const { email, username, phone } = data; 
-        const user = await Users.findOne({ where: { email: email } });
+        const { id, email, username, phone, oldpass, newpass, confirmpass } = data;
+        const user = await Users.findByPk(id);
+        const isPassEquals = await bcrypt.compare(oldpass, user.password);
+        if (isPassEquals && newpass === confirmpass) {
+            const hashPassword = await bcrypt.hash(newpass, 3);
+            return await user.update({ password: hashPassword })
+        }
         if (!user) {
             throw ApiError.BadRequest("Пользователь не найден");
         }
         return await user.update(
-            { username: username, phone: phone })
+            { username: username, phone: phone, email: email })
     }
 
     async me(req, res) {
@@ -120,6 +125,34 @@ class UserService {
 
         user.isActivated = true;
         await user.save();
+    }
+
+    async uploadAvatar(data) {
+        const { file, id } = data;
+        const user = await Users.findByPk(id);
+        if(user){
+            const avatarName = uuid.v4() + ".jpg"; 
+            file.mv(process.env.STATIC_PATH + '\\' + avatarName);
+            user.avatar = avatarName
+            await user.save()
+            return 'Awatar was uploaded'
+        }
+        else{
+            return 'Пользователь не найден'
+        }
+    }
+
+    async deleteAvatar(id) {
+        const user = await Users.findByPk(id);
+        if(user){
+            fs.unlinkSync(process.env.STATIC_PATH + '\\' + user.avatar)
+            user.avatar = ''
+            await user.save()
+            return 'Awatar was deleted'
+        }
+        else{
+            return 'Не удалось удалить автарку'
+        }
     }
 
 }

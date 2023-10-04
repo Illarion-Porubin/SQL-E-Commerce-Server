@@ -14,7 +14,7 @@ class checkAuth {
         });
       }
     }
-    else {
+    else { 
       return res.status(403).json({
         message: "Токен не найден",
       });
