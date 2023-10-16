@@ -88,6 +88,7 @@ class UserService {
 
             return {
                 ...tokens,
+                provider: 'default',
                 user: userDto
             }
         } catch (err) {

@@ -21,7 +21,7 @@ app.use(express.static('static'));
 app.use(cookieSession({
     name:"session",
     keys:["User"],
-    maxAge: 24 * 60 * 60 * 100
+    maxAge: 24 * 60 * 60 * 100 // уменьшить
 }));
 
 app.use(passport.initialize());
