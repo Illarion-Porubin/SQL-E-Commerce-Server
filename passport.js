@@ -15,10 +15,10 @@ passport.use(new GithubStrategy({
       accessToken: accessToken,
       provider: profile.provider,
       user: {
-        id: profile._json.sub,
+        id: profile._json.id,
         avatar: profile._json.avatar_url,
         username: profile._json.given_name,
-        email: profile.emails[0],
+        email: profile.emails[0].value,
         phone: '',
         isActivated: true,
         admin: false,
