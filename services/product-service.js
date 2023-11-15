@@ -27,6 +27,7 @@ class ProductService {
             if (!findRatingCard) {
                 return await Ratings.create({ UserId: UserId, ProductId: ProductId, rating: rating })
             }
+            const data = await findRatingCard.update({ rating: rating })
             return await findRatingCard.update({ rating: rating })
         } catch (error) {
             return error

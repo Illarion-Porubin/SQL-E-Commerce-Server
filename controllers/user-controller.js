@@ -1,5 +1,4 @@
 const userService = require('../services/user-service');
-const ApiError = require('../exceptions/api-error');
 
 class UserController {
     async registration(req, res, next) {
@@ -11,7 +10,7 @@ class UserController {
             })
             return res.json(userData);
         } catch (e) {
-            res.json(e)
+            return res.json(e)
         }
     }
 

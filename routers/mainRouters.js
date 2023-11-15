@@ -9,7 +9,6 @@ const checkAuth = require("../middlewares/checkAuth");
 router.post('/registration', userController.registration);
 router.post('/login', userController.login);
 router.post('/logout', userController.logout);
-// router.post('/avatar/photo', userController.addPhoto);
 router.post('/avatar', checkAuth.check, userController.uploadAvatar);
 router.get('/me', checkAuth.check, userController.getMe);
 router.get('/refresh', userController.refresh);

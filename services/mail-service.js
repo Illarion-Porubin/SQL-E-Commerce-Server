@@ -6,9 +6,9 @@ class MailService {
         this.transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: process.env.SMTP_PORT,
-            // service: "gmail",
-            // secure: true,
-            secure: false,
+            service: "gmail",
+            secure: true,
+            // secure: false,
             auth: {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASSWORD
@@ -52,25 +52,3 @@ class MailService {
 }
 
 module.exports = new MailService();
-
-
-
-// `
-// <div>
-//     <h1>Поступил заказ</h1>
-//         ${data.userCart.map((item) => {
-//             return (
-//                 `
-//                 <div>
-//                     <p>ID товара: ${item.productId}</p>
-//                     <p>Цена за единицу: ${item.newprice}</p>
-//                     <p>Количество: ${item.count}</p>
-//                 </div>
-//                 `
-//             )
-//         })}
-//     </p>
-//     <p>Количество позиций ${data.amount}</p>
-//     <p>Общая соимоть <span>$</span>${data.totalsum}</p>
-// </div>
-// `
