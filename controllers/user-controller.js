@@ -80,40 +80,61 @@ class UserController {
     }
 
 
-    async activate(req, res, next) {
+    async activate(req, res) {
         try {
             const activationLink = req.params.link;
             await userService.activate(activationLink);
             return res.redirect(process.env.CLIENT_URL);
         } catch (e) {
-            res.json(e)
+            return res.json(e)
         }
     }
 
-    async uploadAvatar(req, res) {
-        const file = req.files.file;
-        const id = req.userId;
-        if(file && id){
-            try {
-                if(file && id) {
-                   const upload =  await userService.uploadAvatar({file, id})
-                   return res.json(upload)
-                }
-            } catch (e) {
-                return res.json(e)
-            }
-        }
-        else{
-            return res.json('Ошибка данных')
+    async updateAvatar(req, res) {
+        try {
+            const avatar = await userService.updateAvatar(req.body);
+            return res.json(avatar);
+        } catch (e) {
+            return res.json(e)
         }
     }
+
+    // async uploadAvatar(req, res) {
+    //     const file = req.files.file;
+    //     const id = req.userId;
+    //     if(file && id){
+    //         try {
+    //             if(file && id) {
+    //                const upload =  await userService.uploadAvatar({file, id})
+    //                return res.json(upload)
+    //             }
+    //         } catch (e) {
+    //             return res.json(e)
+    //         }
+    //     }
+    //     else{
+    //         return res.json('Ошибка данных')
+    //     }
+    // }
+
+    // async deleteAvatar(req, res) {
+    //     const id = req.userId;
+    //     try {
+    //         if(id) {
+    //            const upload =  await userService.deleteAvatar(id)
+    //            return res.json(upload)
+    //         }
+    //     } catch (e) {
+    //         res.json(e)
+    //     }
+    // }
 
     async deleteAvatar(req, res) {
         const id = req.userId;
         try {
-            if(id) {
-               const upload =  await userService.deleteAvatar(id)
-               return res.json(upload)
+            if (id) {
+                const upload = await userService.deleteAvatar(id)
+                return res.json(upload)
             }
         } catch (e) {
             res.json(e)

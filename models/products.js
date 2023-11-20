@@ -1,10 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
     const Products = sequelize.define("Products", {
-        type: {
-            type: DataTypes.STRING,
-            require: true,
-            allowNull: false,
-        },
+        ////////////////////////
+
+        // type: {
+        //     type: DataTypes.STRING,
+        //     require: true,
+        //     allowNull: false,
+        // },
 
         desc: {
             type: DataTypes.STRING,
@@ -24,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
 
-        oldprice: { 
+        oldprice: {
             type: DataTypes.INTEGER,
             require: true,
             allowNull: false,
@@ -51,7 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     Products.associate = (models) => {
-        Products.hasMany(models.Ratings, { onDelete: "cascade", });
+        Products.hasMany(models.Ratings, { onDelete: "cascade" });
+        Products.belongsTo(models.Categorys, { onDelete: "cascade" });
         // Products.belongsToMany(models.Categorys, { through: 'ProductList' });
         // Products.hasOne(models.CartList);
         // Users.belongsToMany(models.Roles, { through: 'UserRoles' });

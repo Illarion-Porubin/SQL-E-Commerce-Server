@@ -72,8 +72,23 @@ class UserService {
             throw ApiError.BadRequest("Пользователь не найден");
         }
         return await user.update(
-            { username: username, phone: phone, email: email })
+            { username: username, phone: phone, email: email, avatar: avatar })
     }
+
+    async updateAvatar(data) {
+        try {
+            const { email, avatar } = data;
+            console.log(email, avatar, 'updateAvatar')
+            const user = await Users.findOne({ where: { email: email } });
+            if(!user){
+                return ApiError.BadRequest("Пользователь не найден");
+            }
+            return await user.update({ avatar: avatar })  
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     async me(req, res) {
         try {
@@ -129,30 +144,43 @@ class UserService {
         await user.save();
     }
 
-    async uploadAvatar(data) {
-        const { file, id } = data;
-        const user = await Users.findByPk(id);
-        if(user){
-            const avatarName = uuid.v4() + ".jpg"; 
-            file.mv(process.env.STATIC_PATH + '\\' + avatarName);
-            user.avatar = avatarName
-            await user.save()
-            return 'Awatar was uploaded'
-        }
-        else{
-            return 'Пользователь не найден'
-        }
-    }
+    // async uploadAvatar(data) {
+    //     const { file, id } = data;
+    //     const user = await Users.findByPk(id);
+    //     if(user){
+    //         const avatarName = uuid.v4() + ".jpg"; 
+    //         file.mv(process.env.STATIC_PATH + '\\' + avatarName);
+    //         user.avatar = avatarName
+    //         await user.save()
+    //         return 'Awatar was uploaded'
+    //     }
+    //     else{
+    //         return 'Пользователь не найден'
+    //     }
+    // }
+
+    // async deleteAvatar(id) {
+    //     const user = await Users.findByPk(id);
+    //     if(user){
+    //         fs.unlinkSync(process.env.STATIC_PATH + '\\' + user.avatar)
+    //         user.avatar = ''
+    //         await user.save()
+    //         return 'Awatar was deleted'
+    //     }
+    //     else{
+    //         return 'Не удалось удалить автарку'
+    //     }
+    // }
 
     async deleteAvatar(id) {
         const user = await Users.findByPk(id);
-        if(user){
+        if (user) {
             fs.unlinkSync(process.env.STATIC_PATH + '\\' + user.avatar)
             user.avatar = ''
             await user.save()
             return 'Awatar was deleted'
         }
-        else{
+        else {
             return 'Не удалось удалить автарку'
         }
     }

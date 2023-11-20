@@ -49,15 +49,15 @@ module.exports = (sequelize, DataTypes) => {
                 }
             ]
         }
-    )
+    ) 
 
     Users.associate = (models) => {
         Users.hasMany(models.Ratings, { onDelete: "cascade", });
         Users.hasOne(models.Tokens, {
-            foreignKey: {
-                name: DataTypes.UUID,
-                allowNull: true
-            },
+            // foreignKey: {
+            //     name: DataTypes.UUID,
+            //     allowNull: true
+            // },
             onDelete: "cascade"
         });
     }

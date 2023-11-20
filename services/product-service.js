@@ -1,4 +1,4 @@
-const { Products, Ratings } = require("../models");
+const { Products, Ratings, Categorys } = require("../models");
 const Sequelize = require('sequelize');
 
 class ProductService {
@@ -29,6 +29,20 @@ class ProductService {
             }
             const data = await findRatingCard.update({ rating: rating })
             return await findRatingCard.update({ rating: rating })
+        } catch (error) {
+            return error
+        }
+    }
+
+    async addCategory(data) {
+        const { productId, categoryId } = data;
+        try {
+            const product = await Products.findByPk(productId);
+            const category = await Categorys.findByPk(categoryId);
+            if (product && category) {
+                return await product.update({ CategoryId: categoryId})
+            }
+            return 'ID не найден'
         } catch (error) {
             return error
         }

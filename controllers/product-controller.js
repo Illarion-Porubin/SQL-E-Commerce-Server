@@ -12,7 +12,7 @@ class ProductController {
 
     async getProductById(req, res) {
         const prodId = req.params.id;
-        if(prodId){
+        if (prodId) {
             const product = await productService.getProductById(prodId)
             return res.status(200).json(product)
         }
@@ -21,7 +21,7 @@ class ProductController {
 
     async searchProductByValue(req, res) {
         const data = JSON.parse(req.params.paramsProduct)
-        if(data){
+        if (data) {
             const product = await productService.searchProductByValue(data)
             return res.status(200).json(product)
         }
@@ -33,22 +33,30 @@ class ProductController {
         const label = params.label;
         const page = params.page;
 
-        if(label){
+        if (label) {
             const allProducts = await productService.getAllProductsByLabel(label, page)
             return res.status(200).json(allProducts)
         }
         return res.status(401).json({ error: "Label is empty" })
-    }   
+    }
 
     async addRating(req, res) {
         const data = req.body
-        if(data){
+        if (data) {
             const allProducts = await productService.addRating(data)
             return res.status(200).json(allProducts)
         }
         return res.status(401).json({ error: "Data is empty" })
     }
-   
+
+    async addCategory(req, res) {
+        const { productId, categoryId } = req.body;
+        if (productId && categoryId) {
+            const data = await productService.addCategory(req.body)
+            return res.status(200).json(data)
+        }
+        return res.status(401).json({ error: "Data is empty" })
+    }
 }
 
 module.exports = new ProductController() 
