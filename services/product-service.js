@@ -20,6 +20,15 @@ class ProductService {
         }
     }
 
+    async getAllProducts() {
+        try {
+            const products = await Products.findAll()
+            return products
+        } catch (error) {
+            return error
+        }
+    }
+
     async addRating(data) {
         const { UserId, ProductId, rating } = data;
         try {

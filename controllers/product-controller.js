@@ -10,6 +10,14 @@ class ProductController {
         return res.status(401).json({ error: "Bad request" })
     }
 
+    async getAllProducts(req, res) {
+        const data = await productService.getAllProducts()
+        if (data) {
+            return res.status(200).json(data)
+        }
+        return res.status(401).json({ error: "Bad request" })
+    }
+
     async getProductById(req, res) {
         const prodId = req.params.id;
         if (prodId) {

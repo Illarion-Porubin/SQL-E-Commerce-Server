@@ -30,6 +30,7 @@ router.post('/category', categoryController.addCategory);
 router.put('/category', categoryController.putCategory);
 router.delete('/category', categoryController.deleteCategory);
 ///product///
+router.get('/products', productController.getAllProducts);
 router.post('/product', productController.createProduct);
 router.post('/product/rating', productController.addRating);
 router.post('/product/category', productController.addCategory);
