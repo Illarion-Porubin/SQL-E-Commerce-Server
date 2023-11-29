@@ -6,7 +6,7 @@ class CategoryService {
         try {
             const { title } = data;
             await Categorys.create({ title });
-            return 'категория добавленна';
+            return await Categorys.findAll();
         } catch (error) {
             return error
         }
@@ -43,7 +43,8 @@ class CategoryService {
             if (!category) {
                 return ApiError.BadRequest("Категория не найдена");
             }
-            return await category.update({ title })
+            await category.update({ title });
+            return await Categorys.findAll();
         } catch (error) {
             return error
         }
@@ -55,15 +56,11 @@ class CategoryService {
             if (!category) {
                 return ApiError.BadRequest("Категория не найдена");
             }
-            await category.destroy()
-            return "Категория удалена"
+            return await category.destroy();
         } catch (error) {
             return error
         }
     }
-
-
-
 }
 
 module.exports = new CategoryService()

@@ -16,6 +16,5 @@ module.exports = (sequlize, DataTypes) => {
         }
     })
 
-
     return Carts
 }

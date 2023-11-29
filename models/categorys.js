@@ -6,16 +6,26 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }
     },
+        {
+            // don't add the timestamp attributes (updatedAt, createdAt)
+            timestamps: false,
 
-    {
-        indexes: [
-            {
-                unique: true,
-                fields: ['title']
-            }
-        ]
-    }
-    
+            // If don't want createdAt
+            createdAt: false,
+
+            // If don't want updatedAt
+            updatedAt: false
+        },
+
+        {
+            indexes: [
+                {
+                    unique: true,
+                    fields: ['title']
+                }
+            ]
+        }
+
     )
 
     Categorys.associate = (models) => {

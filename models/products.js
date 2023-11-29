@@ -2,6 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const Products = sequelize.define("Products", {
         ////////////////////////
 
+        // mark
         // type: {
         //     type: DataTypes.STRING,
         //     require: true,
