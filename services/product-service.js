@@ -4,8 +4,33 @@ const Sequelize = require('sequelize');
 class ProductService {
     async createProduct(data) {
         try {
-            const newProduct = await Products.create(data);
-            return newProduct
+            await Products.create(data);
+            return await Products.findAll();
+        } catch (error) {
+            return error
+        }
+    }
+
+    async delteProduct(id) {
+        try {
+            const product = await Products.findByPk(id);
+            if (!product) {
+                return ApiError.BadRequest("Товар не найден");
+            }
+            await product.destroy();
+            return await Products.findAll();
+        } catch (error) {
+            return error
+        }
+    }
+    
+    async updateProduct(id) {
+        try {
+            const product = await Products.findByPk(id);
+            if (!product) {
+                return ApiError.BadRequest("Товар не найден");
+            }
+            return await product
         } catch (error) {
             return error
         }
@@ -43,7 +68,7 @@ class ProductService {
         }
     }
 
-    async addCategory(data) {
+    async addCategoryProduct(data) {
         const { productId, categoryId } = data;
         try {
             const product = await Products.findByPk(productId);

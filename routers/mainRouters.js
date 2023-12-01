@@ -28,14 +28,16 @@ router.get('/category', categoryController.getAllCategory);
 router.get('/category/:id', categoryController.getCategoryProductsById);
 router.post('/category', categoryController.addCategory);
 router.put('/category', categoryController.putCategory);
-router.delete('/category', categoryController.deleteCategory);
+router.delete('/category', categoryController.deleteCategory); 
 ///product///
-router.get('/products', productController.getAllProducts);
-router.post('/product', productController.createProduct);
-router.post('/product/rating', productController.addRating);
-router.post('/product/category', productController.addCategory);
 router.get('/product/:id', productController.getProductById);
 router.get('/product/search/:paramsProduct', productController.searchProductByValue);
 router.get('/products/label/:paramsProducts', productController.getAllProductsByLabel);
+router.get('/products', productController.getAllProducts);
+router.post('/product', productController.createProduct);
+router.post('/product/rating', productController.addRating);
+router.post('/product/category', productController.addCategoryProduct);
+router.put("/product", productController.updateProduct)
+router.delete('/product', productController.delteProduct);
 
 module.exports = router;

@@ -57,10 +57,29 @@ class ProductController {
         return res.status(401).json({ error: "Data is empty" })
     }
 
-    async addCategory(req, res) {
+    async addCategoryProduct(req, res) {
         const { productId, categoryId } = req.body;
         if (productId && categoryId) {
-            const data = await productService.addCategory(req.body)
+            const data = await productService.addCategoryProduct(req.body)
+            return res.status(200).json(data)
+        }
+        return res.status(401).json({ error: "Data is empty" })
+    }
+
+    async delteProduct(req, res) {
+        const { id } = req.body;
+        if (id) {
+            const data = await productService.delteProduct(id)
+            return res.status(200).json(data)
+        }
+        return res.status(401).json({ error: "Data is empty" })
+    }
+
+    async updateProduct(req, res) {
+        const { id } = req.body;
+        console.log(id, 'id<<')
+        if (id) {
+            const data = await productService.updateProduct(id)
             return res.status(200).json(data)
         }
         return res.status(401).json({ error: "Data is empty" })

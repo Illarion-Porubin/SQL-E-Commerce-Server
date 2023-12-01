@@ -1,15 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
     const Products = sequelize.define("Products", {
-        ////////////////////////
-
-        // mark
-        // type: {
-        //     type: DataTypes.STRING,
-        //     require: true,
-        //     allowNull: false,
-        // },
-
         desc: {
+            type: DataTypes.STRING,
+            require: true,
+            allowNull: false,
+        },
+
+        label: {
             type: DataTypes.STRING,
             require: true,
             allowNull: false,
@@ -20,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
             require: true,
             allowNull: false,
         },
-
+ 
         newprice: {
             type: DataTypes.INTEGER,
             require: true,
             allowNull: false,
-        },
+        }, 
 
         oldprice: {
             type: DataTypes.INTEGER,
@@ -34,23 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         ///////defaultValue
-
         rating: {
             type: DataTypes.INTEGER,
             defaultValue: 0,
-        },
-
-        collection: {
-            type: DataTypes.STRING,
-            defaultValue: '2020',
-            allowNull: false,
-        },
-
-        label: {
-            type: DataTypes.STRING,
-            defaultValue: 'new',
-            allowNull: false,
-        },
+        }, 
     })
 
     Products.associate = (models) => {
