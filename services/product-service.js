@@ -5,7 +5,12 @@ class ProductService {
     async createProduct(data) {
         try {
             await Products.create(data);
-            return await Products.findAll();
+            return await Products.findAll({
+                include: [{
+                    model: Ratings,
+                    attributes: ['rating']
+                }],
+            });
         } catch (error) {
             return error
         }
@@ -18,19 +23,31 @@ class ProductService {
                 return ApiError.BadRequest("Товар не найден");
             }
             await product.destroy();
-            return await Products.findAll();
+            return await Products.findAll({
+                include: [{
+                    model: Ratings,
+                    attributes: ['rating']
+                }],
+            });
         } catch (error) {
             return error
         }
     }
-    
-    async updateProduct(id) {
+
+    async updateProduct(data) {
+        const { id, rating, desc, label, img, newprice, oldprice } = data;
         try {
             const product = await Products.findByPk(id);
             if (!product) {
                 return ApiError.BadRequest("Товар не найден");
             }
-            return await product
+            await product.update({ id, rating, desc, label, img, newprice, oldprice });
+            return await Products.findAll({
+                include: [{
+                    model: Ratings,
+                    attributes: ['rating']
+                }],
+            });
         } catch (error) {
             return error
         }
@@ -47,7 +64,12 @@ class ProductService {
 
     async getAllProducts() {
         try {
-            const products = await Products.findAll()
+            const products = await Products.findAll({
+                include: [{
+                    model: Ratings,
+                    attributes: ['rating']
+                }],
+            })
             return products
         } catch (error) {
             return error
@@ -61,8 +83,13 @@ class ProductService {
             if (!findRatingCard) {
                 return await Ratings.create({ UserId: UserId, ProductId: ProductId, rating: rating })
             }
-            const data = await findRatingCard.update({ rating: rating })
-            return await findRatingCard.update({ rating: rating })
+            return await findRatingCard.update({ rating: rating });
+            // await Products.findAll({
+            //     include: [{
+            //         model: Ratings,
+            //         attributes: ['rating']
+            //     }],
+            // })
         } catch (error) {
             return error
         }
@@ -74,7 +101,7 @@ class ProductService {
             const product = await Products.findByPk(productId);
             const category = await Categorys.findByPk(categoryId);
             if (product && category) {
-                return await product.update({ CategoryId: categoryId})
+                return await product.update({ CategoryId: categoryId })
             }
             return 'ID не найден'
         } catch (error) {
@@ -83,7 +110,7 @@ class ProductService {
     }
 
     async searchProductByValue(data) {
-        const {word, page} = data;
+        const { word, page } = data;
         try {
             const limitProducts = 8;
             const currentPage = Number(page);
@@ -92,7 +119,7 @@ class ProductService {
             const checkPage = (currentPage * limitProducts) > totalProducts.length ? lastPage * limitProducts : currentPage * limitProducts;
             const product = await Products.findAndCountAll({
                 limit: limitProducts, //number of products per page
-                offset:checkPage, //page
+                offset: checkPage, //page
                 include: [{
                     model: Ratings,
                     attributes: ['rating']
@@ -103,7 +130,7 @@ class ProductService {
                     ]
                 }
             })
-            return product
+            return product.rows
         } catch (error) {
             return error
         }
@@ -138,6 +165,38 @@ class ProductService {
                     },
             )
             return allPages.rows
+        } catch (error) {
+            return error
+        }
+    }
+
+    async getAllProductsByCategory(category, page) {
+        try {
+            const limitProducts = 8;
+            const currentPage = Number(page);
+            const totalProducts = await Products.findAll();
+            const lastPage = Math.ceil(totalProducts.length / limitProducts) - 1;
+            const checkPage = (currentPage * limitProducts) > totalProducts.length ? lastPage * limitProducts : currentPage * limitProducts;
+            if (category === "all") {
+                return await Products.findAll({
+                    include: [{
+                        model: Ratings,
+                        attributes: ['rating']
+                    }],
+                });
+            }
+            const allPages = await Categorys.findAndCountAll(
+                {
+                    where: { title: category },
+                    limit: limitProducts, //number of products per page
+                    offset: checkPage, //page
+                    include: [{
+                        model: Products, include: [{model: Ratings, attributes: ['rating']}]
+                    }]
+                },
+            )
+            // const data = allPages.rows[0].data.Products;
+            return allPages.rows[0].Products
         } catch (error) {
             return error
         }

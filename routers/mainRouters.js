@@ -20,7 +20,7 @@ router.put('/update', userController.update);
 // router.delete('/avatar', checkAuth.check, userController.deleteAvatar);
 router.put('/avatar', checkAuth.check, userController.updateAvatar);
 ///////////////cloudinary/////////////
-router.delete("/avatar/:id", cloudinaryController.delete)
+router.delete("/photo/:id", cloudinaryController.delete)
 ///cart///
 router.post('/cart', cartController.addOrder);
 ///category///
@@ -33,11 +33,12 @@ router.delete('/category', categoryController.deleteCategory);
 router.get('/product/:id', productController.getProductById);
 router.get('/product/search/:paramsProduct', productController.searchProductByValue);
 router.get('/products/label/:paramsProducts', productController.getAllProductsByLabel);
+router.get('/products/category/:paramsProducts', productController.getAllProductsByCategory);
 router.get('/products', productController.getAllProducts);
 router.post('/product', productController.createProduct);
 router.post('/product/rating', productController.addRating);
 router.post('/product/category', productController.addCategoryProduct);
-router.put("/product", productController.updateProduct)
+router.put('/product', productController.updateProduct)
 router.delete('/product', productController.delteProduct);
 
 module.exports = router;

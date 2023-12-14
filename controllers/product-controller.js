@@ -20,6 +20,7 @@ class ProductController {
 
     async getProductById(req, res) {
         const prodId = req.params.id;
+        console.log(prodId)
         if (prodId) {
             const product = await productService.getProductById(prodId)
             return res.status(200).json(product)
@@ -34,6 +35,18 @@ class ProductController {
             return res.status(200).json(product)
         }
         return res.status(401).json({ error: "paramsProduct is empty" })
+    }
+    
+    async getAllProductsByCategory(req, res) {
+        const params = JSON.parse(req.params.paramsProducts)
+        const category = params.category;
+        const page = params.page;
+
+        if (category) {
+            const products = await productService.getAllProductsByCategory(category, page)
+            return res.status(200).json(products)
+        }
+        return res.status(401).json({ error: "Category is empty" })
     }
 
     async getAllProductsByLabel(req, res) {
@@ -76,11 +89,10 @@ class ProductController {
     }
 
     async updateProduct(req, res) {
-        const { id } = req.body;
-        console.log(id, 'id<<')
-        if (id) {
-            const data = await productService.updateProduct(id)
-            return res.status(200).json(data)
+        const data = req.body;
+        if (data) {
+            const updateProduct = await productService.updateProduct(data)
+            return res.status(200).json(updateProduct)
         }
         return res.status(401).json({ error: "Data is empty" })
     }

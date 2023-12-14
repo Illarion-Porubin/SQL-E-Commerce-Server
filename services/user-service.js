@@ -78,7 +78,6 @@ class UserService {
     async updateAvatar(data) {
         try {
             const { email, avatar } = data;
-            console.log(email, avatar, 'updateAvatar')
             const user = await Users.findOne({ where: { email: email } });
             if(!user){
                 return ApiError.BadRequest("Пользователь не найден");
