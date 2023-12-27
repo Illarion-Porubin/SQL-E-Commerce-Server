@@ -7,6 +7,8 @@ const checkAuth = require("../middlewares/checkAuth");
 const cloudinaryController = require('../controllers/cloudinary-controller');
 // const authMiddleware = require('../middlewares/auth-middleware');
 
+
+
 ///user///
 router.post('/registration', userController.registration);
 router.post('/login', userController.login);

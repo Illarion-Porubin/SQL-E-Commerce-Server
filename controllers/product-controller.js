@@ -20,7 +20,6 @@ class ProductController {
 
     async getProductById(req, res) {
         const prodId = req.params.id;
-        console.log(prodId)
         if (prodId) {
             const product = await productService.getProductById(prodId)
             return res.status(200).json(product)

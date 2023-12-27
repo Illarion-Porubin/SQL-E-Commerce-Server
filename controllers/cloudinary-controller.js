@@ -13,7 +13,7 @@ class CloudinaryController {
     async delete(req, res) {
         try {
             if(req) {
-                cloudinary.uploader.upload(value).then(result=>console.log(result))
+                // cloudinary.uploader.upload(value).then(result=>console.log(result))
                 cloudinary.uploader.destroy(req.params.id).then(result=>console.log(result));
             }
         } catch (e) {
